@@ -15,6 +15,9 @@ const SignUp = ({ navigation }) => {
             try{
                 setLoading(true)
                 await auth().createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                  auth().currentUser.sendEmailVerification()
+                })
                 setLoading(false)
                 Alert.alert("Sucesso", "Registro realizado com sucesso!", [
                     {
@@ -76,6 +79,7 @@ const SignUp = ({ navigation }) => {
                     <MeuButton text="Registrar" onClick={registrar} />
                 </View>
             </ScrollView>
+            {loading && <Loading />}
         </SafeAreaView>
     )
 }
