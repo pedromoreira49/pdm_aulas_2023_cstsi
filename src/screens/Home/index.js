@@ -35,6 +35,7 @@ const Home = ({ navigation }) => {
       <MyButtom text="Incrementar" onClick={incrementar} />
       <MyButtom text="Decrementar" onClick={decrementar} />
       <MyButtom text="Go Back" onClick={() => navigation.goBack()} />
+      <MyButtom text="Cursos" onClick={() => navigation.navigate('Cursos')} />
     </View>
   );
 };
