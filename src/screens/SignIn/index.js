@@ -23,7 +23,7 @@ const SignIn = ({navigation}) => {
   //const {signIn} = useContext(AuthUserContext);
 
   const recuperarSenha = () => {
-    navigation.navigate('ForgotPassWord');
+    navigation.navigate('ForgotPassword');
   };
 
   const entrar = async () => {
@@ -69,7 +69,7 @@ const SignIn = ({navigation}) => {
   };
 
   const cadastrar = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('SignUp')
   };
 
   return (
