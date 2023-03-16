@@ -8,6 +8,7 @@ import SignIn from './src/screens/SignIn';
 import Preload from './src/screens/Preload';
 import SignUp from './src/screens/SignUp';
 import Cursos from './src/screens/Cursos';
+import ForgotPassword from './src/screens/ForgotPassword';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -26,6 +27,7 @@ const AuthStack = () => (
     <Stack.Screen name="Preload" component={Preload} />
     <Stack.Screen name="SignIn" component={SignIn} />
     <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
   </Stack.Navigator>
 )
 
