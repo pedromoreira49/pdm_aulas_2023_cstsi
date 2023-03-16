@@ -12,32 +12,41 @@ import {
 import MeuButton from '../../components/MyButtom';
 import {COLORS} from '../../assets/colors';
 import Loading from '../../components/Loading';
-//import { AuthUserContext } from '../../context/AuthUserProvider'
 import auth from '@react-native-firebase/auth'
 import { CommonActions } from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  //const {signIn} = useContext(AuthUserContext);
 
   const recuperarSenha = () => {
     navigation.navigate('ForgotPassword');
   };
 
+  async function storeUserSession(userEmail, userPass){
+    try{
+      await EncryptedStorage.setItem(
+        "user_session",
+        JSON.stringify({
+            userEmail,
+            userPass
+        })
+      );
+    }catch(err){
+
+    }
+  }
+
   const entrar = async () => {
-    /* if (email !== '' && password !== '') {
-      setLoading(true);
-      await signIn(email, password);
-      setLoading(false);
-    } else {
-      Alert.alert('Erro', 'Por favor, digite email e senha.');
-    } */
     if(email != '' && password != ''){
+      console.log(auth().currentUser)
         try{
-            setLoading(true)
-            await auth().signInWithEmailAndPassword(email, password)
+          setLoading(true)
+          await auth().signInWithEmailAndPassword(email, password)
+          if(auth().currentUser.emailVerified){
+            await storeUserSession(email, password)
             setLoading(false)
             navigation.dispatch(
                 CommonActions.reset({
@@ -45,8 +54,10 @@ const SignIn = ({navigation}) => {
                     routes: [{name: 'AppStack'}]
                 })
             )
+          }else {
+            Alert.alert("Error", "Por favor, Valide seu email!")
+          }
         }catch(err){
-            //console.error("Error: " + err.message)
             setLoading(false)
             switch(err.code){
                 case 'auth/user-not-found':
@@ -64,7 +75,7 @@ const SignIn = ({navigation}) => {
             }
         }
     }else{
-        Alert.alert("Error", "Por favor, digite email e senha")
+        Alert.alert("Error", "Por favor, digite email e senha!")
     }
   };
 
