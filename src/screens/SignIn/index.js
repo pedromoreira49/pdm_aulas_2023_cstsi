@@ -20,67 +20,62 @@ const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  //console.log(auth);
 
-  const recuperarSenha = () => {
-    navigation.navigate('ForgotPassword');
-  };
-
-  async function storeUserSession(userEmail, userPass){
-    try{
+  async function storeUserSession(email, pass) {
+    try {
       await EncryptedStorage.setItem(
-        "user_session",
+        'user_session',
         JSON.stringify({
-            userEmail,
-            userPass
-        })
+          email,
+          pass,
+        }),
       );
-    }catch(err){
-
+    } catch (error) {
+      console.error('SignIn, storeUserSession: ' + error);
     }
   }
 
   const entrar = async () => {
-    if(email != '' && password != ''){
-      console.log(auth().currentUser)
-        try{
-          setLoading(true)
-          await auth().signInWithEmailAndPassword(email, password)
-          if(auth().currentUser.emailVerified){
-            await storeUserSession(email, password)
-            setLoading(false)
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{name: 'AppStack'}]
-                })
-            )
-          }else {
-            Alert.alert("Error", "Por favor, Valide seu email!")
-          }
-        }catch(err){
-            setLoading(false)
-            switch(err.code){
-                case 'auth/user-not-found':
-                    Alert.alert("Error", "Usuário não cadastrado")
-                    break;
-                case 'auth/wrong-password':
-                    Alert.alert("Error", "Usuário não cadastrado")
-                    break;
-                case 'auth/invalid-email':
-                    Alert.alert("Error", "Usuário não cadastrado")
-                    break;
-                case 'auth/user-disabled':
-                    Alert.alert("Error", "Usuário não cadastrado")
-                    break;
-            }
+    if (email && password) {
+      try {
+        setLoading(true);
+        await auth().signInWithEmailAndPassword(email, password);
+        await storeUserSession(email, password);
+        setLoading(false);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'AppStack'}],
+          }),
+        );
+      } catch (e) {
+        setLoading(false);
+        console.error('SignIn, entrar: ' + e);
+        switch (e.code) {
+          case 'auth/user-not-found':
+            Alert.alert('Erro', 'Usuário não cadastrado.');
+            break;
+          case 'auth/wrong-password':
+            Alert.alert('Erro', 'Erro na senha.');
+            break;
+          case 'auth/invalid-email':
+            Alert.alert('Erro', 'Email inválido.');
+            break;
+          case 'auth/user-disabled':
+            Alert.alert('Erro', 'Usuário desabilitado.');
+            break;
         }
-    }else{
-        Alert.alert("Error", "Por favor, digite email e senha!")
+      }
     }
   };
 
   const cadastrar = () => {
     navigation.navigate('SignUp')
+  };
+
+  const recuperarSenha = () => {
+    navigation.navigate('ForgotPassword');
   };
 
   return (
