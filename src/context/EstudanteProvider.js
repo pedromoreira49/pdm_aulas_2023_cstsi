@@ -10,7 +10,7 @@ export const EstudanteProvider = ({children}) => {
             .collection('estudantes')
             .orderBy('nome')
             .onSnapshot((snapshot) => {
-                console.log(snapshot)
+                //console.log(snapshot)
             })
 
         return () =>{listener()}

@@ -13,10 +13,11 @@ import ForgotPassword from '../screens/ForgotPassword';
 
 import { COLORS } from '../assets/colors';
 
-Icon.loadFont()
-
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
+
+console.log('Icon');
+console.log(Icon);
 
 const AuthStack = () => (
     <Stack.Navigator initialRouteName='Preload'
@@ -34,15 +35,19 @@ const AppStack = () => (
     screenOptions={{headerShown: false}}
   >
     <Tab.Screen name="Home" component={Home} options={{
-      tabBarIcon: () => {
-        <Icon name="people" color={COLORS.white} size={20} />
-      }
-    }}/>
+        tabBarLabel: 'Alunos',
+        tabBarIcon: () => (
+          <Icon name="people" color={COLORS.primary} size={20} />
+        ),
+      }}
+    />
     <Tab.Screen name="Cursos" component={Cursos} options={{
-      tabBarIcon: () => {
-        <Icon name="people" color={COLORS.white} size={20} />
-      }  
-    }}/>
+        tabBarLabel: 'Alunos',
+        tabBarIcon: () => (
+          <Icon name="people" color={COLORS.primary} size={20} />
+        ),
+      }}  
+    />
   </Tab.Navigator>
 )
 
