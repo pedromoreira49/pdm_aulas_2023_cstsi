@@ -1,45 +1,41 @@
 import React, {useContext, useEffect, useState} from 'react';
-import MyButtom from '../../components/MyButtom';7
-import firestore from '@react-native-firebase/firestore'
-import { EstudanteContext } from '../../context/EstudanteProvider';
-
+import MyButtom from '../../components/MyButtom';
+import {EstudanteContext} from '../../context/EstudanteProvider';
 import {Container, TextInput} from './styles';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 
 const Estudante = ({route}) => {
   const [uid, setUid] = useState('');
   const [nome, setNome] = useState('');
   const [curso, setCurso] = useState();
-  const [loading, setLoading] = useState(false);
-  const {saveUser, eraseUser} = useContext(EstudanteContext)
+  const {saveUser, eraseUser} = useContext(EstudanteContext);
 
   useEffect(() => {
-    if(route.params.value){
-      setUid(route.params.value.uid)
-      setNome(route.params.value.nome)
-      setCurso(route.params.value.curso)
+    if (route.params.value) {
+      setUid(route.params.value.uid);
+      setNome(route.params.value.nome);
+      setCurso(route.params.value.curso);
     }
-  }, [route])
+  }, [route]);
 
   const save = async () => {
-    saveUser(uid, nome, curso)
+    saveUser(uid, nome, curso);
   };
 
   const erase = async () => {
     Alert.alert('Opa!', 'Você tem certeza que deseja apagar um estudante?', [
       {
         text: 'Cancel',
-        onPress: () => {}
+        onPress: () => {},
       },
       {
         text: 'OK',
         onPress: async () => {
-          await eraseUser(uid)
-          
-        }
-      }
-    ])
-  }
+          await eraseUser(uid);
+        },
+      },
+    ]);
+  };
 
   return (
     <Container>

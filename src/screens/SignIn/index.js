@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,8 +12,8 @@ import {
 import MeuButton from '../../components/MyButtom';
 import {COLORS} from '../../assets/colors';
 import Loading from '../../components/Loading';
-import auth from '@react-native-firebase/auth'
-import { CommonActions } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import {CommonActions} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 const SignIn = ({navigation}) => {
@@ -22,12 +22,12 @@ const SignIn = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   //console.log(auth);
 
-  async function storeUserSession(email, pass) {
+  async function storeUserSession(localEmail, pass) {
     try {
       await EncryptedStorage.setItem(
         'user_session',
         JSON.stringify({
-          email,
+          email: localEmail,
           pass,
         }),
       );
@@ -71,7 +71,7 @@ const SignIn = ({navigation}) => {
   };
 
   const cadastrar = () => {
-    navigation.navigate('SignUp')
+    navigation.navigate('SignUp');
   };
 
   const recuperarSenha = () => {
@@ -92,11 +92,11 @@ const SignIn = ({navigation}) => {
             placeholder="Email"
             keyboardType="email-address"
             returnKeyType="next"
-            onChangeText={(t) => setEmail(t)}
+            onChangeText={t => setEmail(t)}
             onEndEditing={() => this.passTextInput.focus()}
           />
           <TextInput
-            ref={(ref) => {
+            ref={ref => {
               this.passTextInput = ref;
             }}
             style={styles.input}
@@ -104,7 +104,7 @@ const SignIn = ({navigation}) => {
             placeholder="Senha"
             keyboardType="default"
             returnKeyType="go"
-            onChangeText={(t) => setPassword(t)}
+            onChangeText={t => setPassword(t)}
           />
           <Text style={styles.textEsqueceuSenha} onPress={recuperarSenha}>
             Esqueceu sua senha?

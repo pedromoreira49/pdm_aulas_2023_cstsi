@@ -1,48 +1,43 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {View} from 'react-native';
+import React, {useContext} from 'react';
 import MyButtom from '../../components/MyButtom';
-import { Container, Text } from './styles';
+import {Container, Text} from './styles';
 import auth from '@react-native-firebase/auth';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { EstudanteContext } from '../../context/EstudanteProvider';
+import {EstudanteContext} from '../../context/EstudanteProvider';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   const {estudantes} = useContext(EstudanteContext);
-
-  useEffect(() => {
-    console.log(estudantes);
-  }, [estudantes])
-    
 
   async function removeUserSession() {
     try {
-        await EncryptedStorage.removeItem("user_session");
+      await EncryptedStorage.removeItem('user_session');
     } catch (error) {
-        console.error(error.message)
+      console.error(error.message);
     }
   }
 
   const logOut = () => {
-      auth().signOut()
+    auth()
+      .signOut()
       .then(() => {
-        removeUserSession()
+        removeUserSession();
         navigation.dispatch(
           CommonActions.reset({
-              index: 0,
-              routes: [{name: 'AuthStack'}]
-          })
-        )
+            index: 0,
+            routes: [{name: 'AuthStack'}],
+          }),
+        );
       })
-      .catch((err) => {
-        console.log(err.message)
-      })
-  }
+      .catch(err => {
+        console.error(err.message);
+      });
+  };
 
   const routeStudent = value => {
-    navigation.navigate('Estudante', {value})
+    navigation.navigate('Estudante', {value});
   };
 
   return (
