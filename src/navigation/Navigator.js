@@ -10,14 +10,12 @@ import Preload from '../screens/Preload';
 import SignUp from '../screens/SignUp';
 import Cursos from '../screens/Cursos';
 import ForgotPassword from '../screens/ForgotPassword';
+import Estudante from '../screens/Estudante';
 
 import { COLORS } from '../assets/colors';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
-
-console.log('Icon');
-console.log(Icon);
 
 const AuthStack = () => (
     <Stack.Navigator initialRouteName='Preload'
@@ -42,9 +40,9 @@ const AppStack = () => (
       }}
     />
     <Tab.Screen name="Cursos" component={Cursos} options={{
-        tabBarLabel: 'Alunos',
+        tabBarLabel: 'Cursos',
         tabBarIcon: () => (
-          <Icon name="people" color={COLORS.primary} size={20} />
+          <Icon name="rocket" color={COLORS.primary} size={20} />
         ),
       }}  
     />
@@ -59,6 +57,7 @@ const Navigator = () => {
       >
         <Stack.Screen component={AppStack} name="AppStack" />
         <Stack.Screen component={AuthStack} name="AuthStack" />
+        <Stack.Screen component={Estudante} name="Estudante" />
       </Stack.Navigator>
     </NavigationContainer>
   )
