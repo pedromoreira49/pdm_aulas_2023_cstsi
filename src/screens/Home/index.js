@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View} from 'react-native';
 import MyButtom from '../../components/MyButtom';
-import { Text } from './styles';
+import { Container, Text } from './styles';
 import auth from '@react-native-firebase/auth';
 import { CommonActions } from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { EstudanteContext } from '../../context/EstudanteProvider';
+import Item from './Item';
+import AddFloatButton from '../../components/AddFloatButton';
 
 const Home = ({ navigation }) => {
-  const [cont, setCont] = useState(0);
+  const {estudantes} = useContext(EstudanteContext);
 
   useEffect(() => {
-    console.log('chamou na criação do componente');
-
-    return () => {
-      console.log('chamou ao destruir o componente');
-    };
-  }, []);
+    console.log(estudantes);
+  }, [estudantes])
+    
 
   async function removeUserSession() {
     try {
@@ -41,27 +41,21 @@ const Home = ({ navigation }) => {
       })
   }
 
-  useEffect(() => {
-    console.log('chamou na atualização do componente');
-  }, [cont]);
-
-  const incrementar = () => {
-    setCont(cont + 1);
-  };
-
-  const decrementar = () => {
-    setCont(cont - 1);
+  const routeStudent = value => {
+    navigation.navigate('Estudante', {value})
   };
 
   return (
-    <View>
-      <Text>Contador: {cont}</Text>
-      <MyButtom text="Incrementar" onClick={incrementar} />
-      <MyButtom text="Decrementar" onClick={decrementar} />
-      <MyButtom text="Go Back" onClick={() => navigation.goBack()} />
-      <MyButtom text="Cursos" onClick={() => navigation.navigate('Cursos')} />
-      <MyButtom text="Log Out" onClick={logOut} />
-    </View>
+    <Container>
+      <Text>Estudantes</Text>
+
+      {estudantes.map((v, k) => {
+        return <Item item={v} onPress={() => routeStudent(v)} key={k} />;
+      })}
+
+      <AddFloatButton onClick={() => routeStudent(null)} />
+      <MyButtom text="Sair" onClick={logOut} />
+    </Container>
   );
 };
 export default Home;
