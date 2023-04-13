@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import MyButtom from '../../components/MyButtom';
 import {Container, Text} from './styles';
 import auth from '@react-native-firebase/auth';
@@ -7,9 +7,12 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {EstudanteContext} from '../../context/EstudanteProvider';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
+import {TextInput, View} from 'react-native';
 
 const Home = ({navigation}) => {
   const {estudantes} = useContext(EstudanteContext);
+  const [alunos, setAlunos] = useState([]);
+  const [estudanteFiltrados, setEstudanteFiltrado] = useState('');
 
   async function removeUserSession() {
     try {
@@ -18,6 +21,16 @@ const Home = ({navigation}) => {
       console.error(error.message);
     }
   }
+
+  useEffect(() => {
+    var arr = [];
+    estudantes.forEach(e => {
+      if (e.nome.toLowerCase().includes(estudanteFiltrados.toLowerCase())) {
+        arr.push(e);
+      }
+    });
+    setAlunos(arr);
+  }, [estudanteFiltrados, estudantes]);
 
   const logOut = () => {
     auth()
@@ -43,11 +56,19 @@ const Home = ({navigation}) => {
   return (
     <Container>
       <Text>Estudantes</Text>
-
-      {estudantes.map((v, k) => {
-        return <Item item={v} onPress={() => routeStudent(v)} key={k} />;
-      })}
-
+      <View>
+        <TextInput
+          placeholder="Pesquisar"
+          onChangeText={t => setEstudanteFiltrado(t)}
+        />
+      </View>
+      {alunos.length > 0
+        ? alunos.map((v, k) => {
+            return <Item item={v} onPress={() => routeStudent(v)} key={k} />;
+          })
+        : estudantes.map((v, k) => {
+            return <Item item={v} onPress={() => routeStudent(v)} key={k} />;
+          })}
       <AddFloatButton onClick={() => routeStudent(null)} />
       <MyButtom text="Sair" onClick={logOut} />
     </Container>
